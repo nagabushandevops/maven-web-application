@@ -9,6 +9,7 @@ node{
 }
 
     try{
+    slackNotifications('STARTED')
     stage('CheckoutCode'){
         git credentialsId: 'dceb0480-6871-4476-ba7e-3d422137d431', url: 'https://github.com/nagabushandevops/maven-web-application.git'
     }
