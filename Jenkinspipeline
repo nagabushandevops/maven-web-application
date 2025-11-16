@@ -1,0 +1,29 @@
+node{
+   def mavenHome = tool name: "maven3.8.6" 
+   echo "Jenkins url is: ${env.JENKINS_URL}"
+   echo "Node Name is: ${env.NODE_NAME}"
+   echo "Job Name is: ${env.JOB_NAME}"
+   properties([buildDiscarder(logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '5')), pipelineTriggers([pollSCM('* * * * *')])])
+   timestamps {
+    // some block
+}
+    stage('CheckoutCode'){
+        git credentialsId: 'dceb0480-6871-4476-ba7e-3d422137d431', url: 'https://github.com/nagabushandevops/maven-web-application.git'
+    }
+    stage('Build'){
+        sh "${mavenHome}/bin/mvn clean package"
+    }
+ /*
+    stage('ExecuteSonarqubeReport'){
+        sh "${mavenHome}/bin/mvn clean sonar:sonar"
+    }
+    stage('UploadArtifactsIntoArtifactoryRepo'){
+        sh "${mavenHome}/bin/mvn clean deploy"
+    }
+    stage('DeployAppIntoTomcatServer'){
+        sshagent(['db304e9c-debc-4cbf-acd6-47a70216e642']) {
+         sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@172.31.4.229:/opt/apache-tomcat-9.0.111/webapps/"
+}
+    } 
+    */
+ }
